@@ -1,0 +1,10 @@
+    [{
+      "text": "Study Javascript",
+      "isDone": false
+    },{
+      "text": "Study Node",
+      "isDone": false
+    },{
+      "text": "Get Rich",
+      "isDone": false
+    }]

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 function Todo({ todo, index, removeTodo }) {
   const [done, setDone] = useState(false);
@@ -44,38 +44,46 @@ function FormTodo({ addTodo }) {
 }
 
 function App() {
-  console.log(`1 Start`);
+  const [todos, setTodos] = useState([]);
 
-  const [todos] = useState([]);
+  useEffect(() => {
+    fetch("/todos.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setTodos(data);
+      });
+  }, []);
 
-  console.log(`2 Component =${JSON.stringify(todos)}`);
+  const addTodo = useCallback(
+    (text) => {
+      const newTodos = [...todos, { text }];
+      setTodos(newTodos);
+    },
+    [todos]
+  );
 
-  fetch("/todos.json")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(`5 -     Response too late ${JSON.stringify(data)}`);
-      todos[0] = data;
-      console.log("6 -     Request Finished");
-    });
+  const removeTodo = useCallback(
+    (index) => {
+      const newTodos = [...todos];
+      newTodos.splice(index, 1);
+      setTodos(newTodos);
+    },
+    [todos]
+  );
 
-  console.log(`3 Render`);
-
-  const addTodo = (text) => {
-    const newTodos = [...todos, { text }];
-    todos[0] = newTodos;
+  const expensiveCalculation = (num) => {
+    for (let i = 0; i < 1000000000; i++) {
+      num += 1;
+    }
+    return num;
   };
 
-  const removeTodo = (index) => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    todos[0] = newTodos;
-  };
-
-  console.log(`4 Finished`);
+  useMemo(() => expensiveCalculation(100000000000000000000), []);
+  // expensiveCalculation(100000000000000000000);
 
   return (
     <div>
-      <div>
+      <div style={{ margin: "auto" }}>
         <h1>Todo List</h1>
         <FormTodo addTodo={addTodo} />
         <div>
