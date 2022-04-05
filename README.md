@@ -47,6 +47,7 @@ We want to fetch some todos from our DB(json file) to display to a user so we re
 
 ```js
 import React, { useState } from "react";
+import "./index.css";
 
 function Todo({ todo, index, removeTodo }) {
   const [done, setDone] = useState(false);
@@ -135,6 +136,8 @@ function App() {
 
 export default App;
 ```
+
+Go ahead and cd into `my-app` and run app by running `npm start` in terminal. (I use vscode)
 
 ### We get no todos. Why no data?
 
@@ -421,6 +424,25 @@ import React, { ..., useMemo } from "react";
 useMemo(() => expensiveCalculation(), []);
 ```
 
+:rocket: [--> Live Example](https://codesandbox.io/s/gb-usememo-u64bv3)
+
 Now, it works! No more slow response when adding or removing todos. A real world example could be you are filtering a large data set, or performing actions on a large data set.
 
 ## Recap
+
+We covered 3 hooks,
+
+### useEffect
+
+It's the alternative for the class component lifecycle methods componentDidMount, componentWillUnmount, componentDidUpdate, etc. You can also use it to create a side effect when dependencies change, i.e. "If some variable changes, do this".
+
+### useCallback
+
+On every render, everything that's inside a functional component will run again. If a child component has a dependency on a function from the parent component, the child will re-render every time the parent re-renders even if that function "doesn't change" (the reference changes, but what the function does won't).
+It's used for optimization by avoiding unnecessary renders from the child, making the function change the reference only when dependencies change. You should use it when a function is a dependency of a side effect e.g. useEffect.
+
+### useMemo
+
+It will run on every render, but with cached values. It will only use new values when certain dependencies change. It's used for optimization when you have expensive computations. Here is also a good answer that explains it.
+
+With these simple examples i hope you understand optimizing performance with react hooks and how asynchronous code works with hooks, thanks for reading, star repo if you like.
